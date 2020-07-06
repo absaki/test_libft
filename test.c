@@ -16,7 +16,19 @@ char func_strmapi_B(unsigned int uint_func_strmapi, char c)
 
 void lst_print(void *str)
 {
-    printf("iter -- %s\n",(char *)str);
+    printf("iter -- %s\n", (char *)str);
+}
+
+void lst_dlt_print(void *str)
+{
+    printf("del -- %s\n", (char *)str);
+}
+
+void *lst_newcont(void *str)
+{
+    char *s;
+    s = ft_strdup((char *)str);
+    return ((void *)s);
 }
 
 int main()
@@ -317,7 +329,7 @@ int main()
     char *char_strtrim_C;
     char_strtrim_C = ft_strtrim(char_strtrim_A, char_strtrim_B);
     printf("\"%s\"\n", char_strtrim_C);
-    printf("length = %ld\n",ft_strlen(char_strtrim_C));
+    printf("length = %ld\n", ft_strlen(char_strtrim_C));
 
     //
     //split
@@ -356,27 +368,27 @@ int main()
     printf("HELLOWORLD == %s\n", str_strmapi_B);
     str_strmapi_B = ft_strmapi(str_strmapi_A, func_strmapi_B);
     printf("0123456789 == %s\n", str_strmapi_B);
-    
+
     //
     //putchar_fd
     printf("\n\nputchar_fd\n");
     //
     char char_putchar_fd = 'a';
-    ft_putchar_fd(char_putchar_fd,1);
+    ft_putchar_fd(char_putchar_fd, 1);
 
     //
     //putstr_fd
     printf("\n\nputstr_fd\n");
     //
     char str_putstr_fd[30] = "Hello PUTSTR!";
-    ft_putstr_fd(str_putstr_fd,1);
+    ft_putstr_fd(str_putstr_fd, 1);
 
     //
     //putendl_fd
     printf("\n\nputendl_fd\n");
     //
     char str_putendl_fd[30] = "Hello PUTENDL!!!";
-    ft_putendl_fd(str_putendl_fd,1);
+    ft_putendl_fd(str_putendl_fd, 1);
 
     //
     //putnbr_fd
@@ -385,31 +397,55 @@ int main()
     int int_putnbr_A = 2147483647;
     int int_putnbr_B = 0;
     int int_putnbr_C = -2147483648;
-    ft_putnbr_fd(int_putnbr_A,1);
+    ft_putnbr_fd(int_putnbr_A, 1);
     printf(" == 2147483647\n");
-    ft_putnbr_fd(int_putnbr_B,1);
+    ft_putnbr_fd(int_putnbr_B, 1);
     printf(" == 0\n");
-    ft_putnbr_fd(int_putnbr_C,1);
+    ft_putnbr_fd(int_putnbr_C, 1);
     printf(" == -2147283648\n");
 
     //
     //list
     printf("\n======    B   N   S    P   R     ======\n");
-    printf(  "======      O   U        A   T   ======\n");
+    printf("======      O   U        A   T   ======\n");
 
     t_list *lst_A;
     t_list *lst_B;
+    t_list *lst_C;
+    t_list *lst_D;
     t_list *lst_arr;
     lst_arr = NULL;
     char *char_lst_A = "this is A";
     char *char_lst_B = "this is B";
+    char *char_lst_C = "this is C";
+    char *char_lst_D = "this is D";
     lst_A = ft_lstnew(char_lst_A);
     lst_B = ft_lstnew(char_lst_B);
-    printf("%s == this is A\n",(char *)(lst_A->content));
-    printf("%s == this is B\n",(char *)(lst_B->content));
-    ft_lstadd_front(&lst_arr,lst_A);
-    printf("%s == this is A\n",(char *)(ft_lstlast(lst_arr)->content));
-    ft_lstadd_back(&lst_A,lst_B);
-    printf("list size 2 == %d\n",ft_lstsize(lst_arr));
-    ft_lstiter(lst_arr,lst_print);
+    lst_C = ft_lstnew(char_lst_C);
+    lst_D = ft_lstnew(char_lst_D);
+    printf("%s == this is A\n", (char *)(lst_A->content));
+    printf("%s == this is B\n", (char *)(lst_B->content));
+    printf("%s == this is C\n", (char *)(lst_C->content));
+    printf("%s == this is D\n", (char *)(lst_D->content));
+    ft_lstadd_front(&lst_arr, lst_A);
+    printf("%s == this is A\n", (char *)(ft_lstlast(lst_arr)->content));
+    ft_lstadd_back(&lst_A, lst_B);
+    ft_lstadd_back(&lst_A, lst_C);
+    ft_lstadd_back(&lst_B, lst_D);
+    printf("list size 4 == %d\n", ft_lstsize(lst_arr));
+    ft_lstiter(lst_arr, lst_print); 
+    lst_C->next = NULL;
+
+    printf("list size 3 == %d\n", ft_lstsize(lst_arr));
+
+    t_list *lst_arr2;
+    
+    printf("next of A = %p\n",(lst_A->content));
+    printf("next of B = %p\n",lst_arr->next->next);
+    printf("next of C = %p\n",lst_arr->next->next->next);
+    lst_arr2 = ft_lstmap(lst_arr, lst_newcont, lst_dlt_print);
+    printf("list size 3 == %d\n", ft_lstsize(lst_arr2));
+    printf("cont of A = %s\n",(char *)(lst_arr2->content));
+    printf("cont of B = %s\n",(char *)(lst_arr2->next->content));
+    printf("cont of C = %s\n",(char *)(lst_arr2->next->next->content));
 }
